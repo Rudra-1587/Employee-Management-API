@@ -6,26 +6,29 @@ import com.example.employee_management_API.Service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/employees")
 @RequiredArgsConstructor
 public class EmployeeController {
 
     private final EmployeeService employeeService;
 
-    @GetMapping("/employees")
+    @GetMapping
     public ResponseEntity<List<EmployeeDTO>> getAllEmployees(){
         return ResponseEntity.ok(employeeService.getAllEmployees());
     }
 
-    @PostMapping("/employees")
+    @PostMapping
     public ResponseEntity<EmployeeDTO> addNewEmployee(@RequestBody addNewEmployeeDTO addNewEmployeeDto){
         return ResponseEntity.status(HttpStatus.CREATED).body(employeeService.createNewEmployee(addNewEmployeeDto));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<EmployeeDTO> getEmployeeById(@PathVariable Long id){
+        return ResponseEntity.ok(employeeService.getEmployeeById(id));
     }
 }

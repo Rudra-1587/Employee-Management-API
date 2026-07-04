@@ -10,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +30,14 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee employee = modelMapper.map(addNewEmployeeDto, Employee.class);
         Employee newEmployee = employeeRepository.save(employee);
         return modelMapper.map(newEmployee, EmployeeDTO.class);
+    }
+
+    @Override
+    public EmployeeDTO getEmployeeById(Long id) {
+        Employee employee =
+                employeeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Employee does " +
+                "not found by id: "+id));
+        return modelMapper.map(employee, EmployeeDTO.class);
     }
 
 }
