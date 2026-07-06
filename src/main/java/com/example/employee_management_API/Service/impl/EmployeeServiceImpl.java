@@ -10,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -47,6 +48,38 @@ public class EmployeeServiceImpl implements EmployeeService {
         modelMapper.map(dto, employee);
         employee = employeeRepository.save(employee);
         return modelMapper.map(employee, EmployeeDTO.class);
+    }
+
+    @Override
+    public EmployeeDTO updatePartialEmployee(Long id, Map<String, Object> data) {
+        Employee employee = employeeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("no such " +
+                "Employee exists by id: "+id));
+        data.forEach(((field, value)-> {
+                switch (field) {
+                    case "firstName":
+                        employee.setFirstName((String) value);
+                        break;
+
+                    case "lastName":
+                        employee.setLastName((String) value);
+                        break;
+
+                    case "email":
+                        employee.setEmail((String) value);
+                        break;
+
+                    case "salary":
+                        employee.setSalary((Double) value);
+                        break;
+
+                    default:
+                        break;
+                };
+            }
+        ));
+
+        Employee updatedEmployee = employeeRepository.save(employee);
+        return modelMapper.map(updatedEmployee, EmployeeDTO.class);
     }
 
 }

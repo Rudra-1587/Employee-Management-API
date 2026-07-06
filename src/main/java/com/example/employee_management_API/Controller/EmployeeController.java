@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/employees")
@@ -35,6 +36,12 @@ public class EmployeeController {
     @PutMapping("/{id}")
     public ResponseEntity<EmployeeDTO> updateEmployee(@PathVariable Long id, @RequestBody addNewEmployeeDTO dto){
         return ResponseEntity.ok(employeeService.updateEmployee(id, dto));
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<EmployeeDTO> updatePartialEmployee(@PathVariable Long id,
+                                                             @RequestBody Map<String, Object> data){
+        return ResponseEntity.ok(employeeService.updatePartialEmployee(id, data));
     }
 
 }
