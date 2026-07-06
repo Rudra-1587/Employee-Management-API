@@ -40,4 +40,13 @@ public class EmployeeServiceImpl implements EmployeeService {
         return modelMapper.map(employee, EmployeeDTO.class);
     }
 
+    @Override
+    public EmployeeDTO updateEmployee(Long id, addNewEmployeeDTO dto) {
+        Employee employee = employeeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("no such " +
+                "Employee exists by id: "+id));
+        modelMapper.map(dto, employee);
+        employee = employeeRepository.save(employee);
+        return modelMapper.map(employee, EmployeeDTO.class);
+    }
+
 }
