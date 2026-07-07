@@ -4,6 +4,7 @@ import com.example.employee_management_API.DTO.EmployeeDTO;
 import com.example.employee_management_API.DTO.addNewEmployeeDTO;
 import com.example.employee_management_API.Service.EmployeeService;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -42,6 +43,12 @@ public class EmployeeController {
     public ResponseEntity<EmployeeDTO> updatePartialEmployee(@PathVariable Long id,
                                                              @RequestBody Map<String, Object> data){
         return ResponseEntity.ok(employeeService.updatePartialEmployee(id, data));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteEmployee(@PathVariable Long id){
+        employeeService.deleteEmployee(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

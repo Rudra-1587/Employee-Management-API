@@ -36,8 +36,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeDTO getEmployeeById(Long id) {
         Employee employee =
-                employeeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Employee does " +
-                "not found by id: "+id));
+                employeeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("no such employee " +
+                        "exists by id: "+id));
         return modelMapper.map(employee, EmployeeDTO.class);
     }
 
@@ -80,6 +80,14 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         Employee updatedEmployee = employeeRepository.save(employee);
         return modelMapper.map(updatedEmployee, EmployeeDTO.class);
+    }
+
+    @Override
+    public void deleteEmployee(Long id) {
+        Employee employee = employeeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("no such " +
+                "employee exists by " +
+                "id: "+id));
+        employeeRepository.delete(employee);
     }
 
 }
